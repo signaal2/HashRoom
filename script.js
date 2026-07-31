@@ -1,32 +1,35 @@
-let balance = 0;
-let speed = 0.00000231;
 let mining = false;
+let balance = 0;
 
-const balanceEl = document.getElementById("balance");
-const statusEl = document.getElementById("status");
-const startBtn = document.getElementById("startBtn");
+const btn = document.getElementById("startBtn");
+const status = document.getElementById("status");
+const balanceText = document.getElementById("balance");
 
-function updateBalance() {
-  balanceEl.innerText = balance.toFixed(8) + " BTC";
-}
+btn.onclick = function () {
 
-setInterval(() => {
-  if (mining) {
-    balance += speed;
-    updateBalance();
-  }
-}, 1000);
+  if (!mining) {
 
-startBtn.addEventListener("click", () => {
-  mining = !mining;
+    mining = true;
+    status.innerHTML = "Mining...";
+    btn.innerHTML = "Stop Mining";
 
-  if (mining) {
-    statusEl.innerText = "Mining...";
-    startBtn.innerText = "Stop Mining";
+    window.miningInterval = setInterval(() => {
+
+      balance += 0.00000012;
+
+      balanceText.innerHTML =
+        balance.toFixed(8) + " BTC";
+
+    }, 1000);
+
   } else {
-    statusEl.innerText = "Stopped";
-    startBtn.innerText = "Start Mining";
-  }
-});
 
-updateBalance();
+    mining = false;
+    status.innerHTML = "Stopped";
+    btn.innerHTML = "Start Mining";
+
+    clearInterval(window.miningInterval);
+
+  }
+
+};
