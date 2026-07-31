@@ -4,17 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HashRoom</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
-<body style="background:#111;color:#fff;text-align:center;font-family:Arial">
+<body>
 
-<h1>🚀 HashRoom</h1>
+<div class="container">
+<h1>HashRoom</h1>
 
-<p>Professional Cloud Bitcoin Mining</p>
+<div class="card">
+<h2>Cloud Bitcoin Mining</h2>
 
-<button style="padding:15px 35px;font-size:18px;background:#f7b500;border:none;border-radius:10px;">
+<p>Status:
+<span id="status">Stopped</span>
+</p>
+
+<h3 id="balance">0.00000000 BTC</h3>
+
+<button id="startBtn">
 Start Mining
 </button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
