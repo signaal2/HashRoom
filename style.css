@@ -140,3 +140,43 @@ h1{
     font-size:16px;
   }
   }
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#111;
+    border-top:1px solid #2b2b2b;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding:10px 0;
+    z-index:999;
+}
+
+.nav-item{
+    text-decoration:none;
+    color:#888;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    font-size:12px;
+    transition:.3s;
+}
+
+.nav-item span{
+    font-size:22px;
+    margin-bottom:4px;
+}
+
+.nav-item.active{
+    color:#f7b500;
+}
+
+.nav-item:hover{
+    color:#f7b500;
+}
+
+body{
+    padding-bottom:90px;
+  }
