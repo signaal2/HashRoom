@@ -6,84 +6,137 @@
 
 body{
   background:#0b0b0b;
-  font-family:Arial,sans-serif;
   color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  background-image:radial-gradient(circle at top,#2d2200,#0b0b0b 70%);
+  font-family:Arial,sans-serif;
 }
 
 .container{
-  width:95%;
   max-width:420px;
+  margin:auto;
+  padding:20px;
 }
 
 .logo{
+  width:60px;
   display:block;
-  width:90px;
-  height:90px;
-  margin:0 auto 20px;
-  border-radius:50%;
-  box-shadow:0 0 25px rgba(255,200,0,.6);
+  margin:15px auto;
 }
 
 h1{
   text-align:center;
-  color:#FFD700;
-  font-size:32px;
+  color:#f7b500;
   margin-bottom:20px;
-  text-shadow:0 0 15px #FFD700;
+  font-size:32px;
+  letter-spacing:2px;
 }
 
 .card{
-  background:rgba(25,25,25,.95);
-  border:1px solid #FFD700;
+  background:#171717;
+  border:1px solid #2b2b2b;
   border-radius:20px;
-  padding:25px;
-  box-shadow:0 0 25px rgba(255,215,0,.25);
+  padding:20px;
+  box-shadow:0 0 25px rgba(255,179,0,.18);
+}
+.top-card{
+  background:linear-gradient(135deg,#1c1c1c,#3a2a00);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:20px;
   text-align:center;
-}h2{
-  color:#FFD700;
-  margin-bottom:15px;
+  border:1px solid #f7b500;
 }
 
-p{
-  margin:12px 0;
-  font-size:18px;
+.top-card h2{
+  color:#d6d6d6;
+  font-size:16px;
+  margin-bottom:10px;
 }
 
-#status{
-  color:#00ff99;
-  font-weight:bold;
-}
-
-#balance{
-  color:#FFD700;
+.top-card h1{
+  color:#fff;
   font-size:30px;
-  margin:25px 0;
-  text-shadow:0 0 12px #FFD700;
+  margin:10px 0;
 }
 
-button{
-  width:100%;
-  padding:15px;
-  border:none;
+.top-card p{
+  color:#c8c8c8;
+  font-size:14px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:20px 0;
+}
+
+.stat{
+  background:#202020;
   border-radius:12px;
-  background:linear-gradient(90deg,#FFD700,#ffb300);
-  color:#111;
+  padding:12px;
+  text-align:center;
+  border:1px solid #2f2f2f;
+}
+
+.stat h3{
+  color:#f7b500;
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.stat p{
+  color:#bdbdbd;
+  font-size:12px;
+}
+.miner-card{
+  margin-top:20px;
+  background:#111;
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  border:1px solid #2f2f2f;
+}
+
+.miner-card img{
+  width:220px;
+  max-width:100%;
+  margin:15px auto;
+  display:block;
+}
+
+#startBtn{
+  width:100%;
+  background:linear-gradient(90deg,#ffb300,#ff8c00);
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  padding:16px;
   font-size:18px;
   font-weight:bold;
   cursor:pointer;
+  margin-top:15px;
   transition:.3s;
 }
 
-button:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px #FFD700;
+#startBtn:hover{
+  transform:scale(1.03);
 }
 
-button:active{
-  transform:scale(.97);
+.active{
+  color:#38ff6b;
+  font-weight:bold;
 }
+
+@media(max-width:480px){
+  .container{
+    padding:12px;
+  }
+
+  h1{
+    font-size:26px;
+  }
+
+  .stat h3{
+    font-size:16px;
+  }
+  }
