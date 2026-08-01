@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mining</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Mining</h2>
+
+<div id="status">Inactive</div>
+
+<button onclick="startMining()">Start Mining</button>
+
+<script>
+const tg = window.Telegram.WebApp;
+const user = tg.initDataUnsafe.user;
+
+function startMining() {
+    localStorage.setItem("mining_" + user.id, "true");
+    document.getElementById("status").innerText = "Active";
+}
+</script>
+
+</body>
+</html>
