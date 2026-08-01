@@ -99,11 +99,37 @@ alert("Wallet copied");
 
 }
 
-function paid(){
+function paid() {
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan");
 
-alert("Your payment request has been received.");
-
+    if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(JSON.stringify({
+            action: "payment",
+            plan: plan
+        }));
+        Telegram.WebApp.close();
+    } else {
+        alert("Payment submitted for: " + plan);
+    }
 }
+    
+    
+
+    
+        
+            
+            
+        
+        
+    
+      
+    
+
+
+
+
+
 
 </script>
 
