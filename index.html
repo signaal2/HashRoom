@@ -153,6 +153,12 @@ const user = tg.initDataUnsafe.user;
 if(user){
     document.getElementById("username").innerText = user.first_name;
     document.getElementById("userid").innerText = user.id;
+
+  const balance = localStorage.getItem("balance_" + user.id) || "0";
+document.getElementById("balance").innerText = balance + " BTC";
+
+const usd = (parseFloat(balance) * 52000).toFixed(2);
+document.getElementById("usd").innerText = "≈ $" + usd;
 }
 </script>
 
