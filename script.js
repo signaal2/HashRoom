@@ -28,7 +28,9 @@ setInterval(() => {
 
 }, 1000);
 function buyPlan(plan) {
-    alert("You selected: " + plan);
+    Telegram.WebApp.close();
 
-    window.location.href = "https://t.me/HashRoom_bot";
+    setTimeout(() => {
+        location.href = "https://t.me/HashRoom_bot";
+    }, 300);
 }
