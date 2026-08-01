@@ -30,5 +30,5 @@ setInterval(() => {
 function buyPlan(plan) {
     alert("You selected: " + plan);
 
-    window.location.href = "https://t.me/HashRoom_Bot";
+    window.location.href = "https://t.me/hashroom_bot";
 }
