@@ -180,3 +180,50 @@ h1{
 body{
     padding-bottom:90px;
   }
+.plan-card{
+background:#181818;
+border-radius:18px;
+padding:20px;
+margin:18px 0;
+border:1px solid #333;
+text-align:center;
+}
+
+.plan-card h2{
+color:#f7b500;
+margin-bottom:12px;
+}
+
+.plan-card p{
+margin:8px 0;
+color:#ddd;
+}
+
+.plan-card button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#ffb300,#ff8c00);
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.starter{
+border-left:5px solid #2ecc71;
+}
+
+.advanced{
+border-left:5px solid #3498db;
+}
+
+.pro{
+border-left:5px solid #9b59b6;
+}
+
+.elite{
+border-left:5px solid #f1c40f;
+}
