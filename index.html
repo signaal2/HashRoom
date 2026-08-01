@@ -16,13 +16,13 @@
     <img src="assets/images/logo.png" class="logo">
     <div>
       <h2>HASH ROOM</h2>
-      <p>Welcome back</p>
+      <p>Welcome back <span id="username">User</span></p>
     </div>
   </div>
 
   <div class="user-box">
-    <strong>Miner VIP 2</strong><br>
-    <small>ID: 458102</small>
+    <strong id="plan">Miner VIP 2</strong><br>
+    <small>ID: <span id="userid">0</span></small>
   </div>
 
 </div>
@@ -140,5 +140,23 @@
 
 
 <script src="script.js"></script>
+  
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+const user = tg.initDataUnsafe.user;
+
+if(user){
+    document.getElementById("username").innerText = user.first_name;
+    document.getElementById("userid").innerText = user.id;
+}
+</script>
+
 </body>
 </html>
+
+
