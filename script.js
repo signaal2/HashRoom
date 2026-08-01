@@ -27,3 +27,8 @@ setInterval(() => {
     }
 
 }, 1000);
+function buyPlan(plan) {
+    alert("You selected: " + plan);
+
+    window.location.href = "https://t.me/HashRoom_Bot";
+}
