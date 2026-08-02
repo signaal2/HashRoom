@@ -2,14 +2,69 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<title>Hash Room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referral</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{
+background:#111827;
+color:white;
+font-family:sans-serif;
+text-align:center;
+padding:30px;
+}
+button{
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#00b894;
+color:white;
+font-size:16px;
+margin-top:20px;
+}
+input{
+width:90%;
+padding:12px;
+border-radius:10px;
+border:none;
+margin-top:20px;
+text-align:center;
+}
+</style>
+
 </head>
-<body style="background:#111;color:#fff;text-align:center;padding-top:80px;font-family:sans-serif;">
-<h2>Hash Room</h2>
-<p>در حال بارگذاری...</p>
+
+<body>
+
+<h2>Referral</h2>
+
+<p>Invite your friends and earn rewards.</p>
+
+<input id="refLink" readonly>
+
+<br>
+
+<button onclick="copyLink()">Copy Referral Link</button>
 
 <script>
-location.href="index.html";
+
+const user=Telegram.WebApp.initDataUnsafe.user;
+
+const link="https://t.me/HashRoom_bot?start="+user.id;
+
+document.getElementById("refLink").value=link;
+
+function copyLink(){
+
+navigator.clipboard.writeText(link);
+
+Telegram.WebApp.showAlert("Referral Link Copied");
+
+}
+
 </script>
+
 </body>
 </html>
