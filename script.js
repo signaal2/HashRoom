@@ -7,6 +7,20 @@ const balance = document.getElementById("balance");
 let mining = false;
 let btc = 0;
 let miningInterval = null;
+async function saveBalance() {
+    const { doc, updateDoc } = await import(
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+    );
+
+    const user = Telegram.WebApp.initDataUnsafe.user;
+
+    await updateDoc(
+        doc(window.db, "users", String(user.id)),
+        {
+            balance: btc
+        }
+    );
+}
 async function loadBalance() {
 
     if (!window.db || !window.Telegram?.WebApp?.initDataUnsafe?.user)
