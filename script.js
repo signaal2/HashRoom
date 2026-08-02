@@ -1,3 +1,6 @@
+console.log("Script Loaded");
+console.log("Firebase DB:", window.db);
+console.log("Telegram:", window.Telegram?.WebApp?.initDataUnsafe);
 const startBtn = document.getElementById("startBtn");
 const balance = document.getElementById("balance");
 
