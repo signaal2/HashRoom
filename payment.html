@@ -3,133 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Hash Room Payment</title>
-
-<style>
-
-body{
-background:#0d0d0d;
-font-family:Arial,sans-serif;
-color:white;
-text-align:center;
-padding:30px;
-}
-
-.card{
-background:#1a1a1a;
-border-radius:20px;
-padding:25px;
-max-width:420px;
-margin:auto;
-border:1px solid #333;
-box-shadow:0 0 20px rgba(255,181,0,.25);
-}
-
-h1{
-color:#ffb300;
-}
-
-.wallet{
-background:#111;
-padding:15px;
-border-radius:12px;
-margin:20px 0;
-word-break:break-all;
-color:#00ff99;
-font-size:14px;
-}
-
-button{
-width:100%;
-padding:15px;
-margin-top:15px;
-border:none;
-border-radius:15px;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.copy{
-background:#ffb300;
-color:#000;
-}
-
-.paid{
-background:#00c853;
-color:#fff;
-}
-
-</style>
-
+<title>Payment</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-<h1>Hash Room</h1>
+<h2>Complete Your Payment</h2>
 
-<h3>USDT (BEP20)</h3>
+<div class="plan-card">
 
-<p>Please send your payment to:</p>
+<h3 id="planName"></h3>
 
-<div class="wallet" id="wallet">
-0x9D378cC1F4Ee18690eE591c203Ee63ff66903974
-</div>
+<p id="planPrice"></p>
 
-<button class="copy" onclick="copyWallet()">
-Copy Wallet
+<hr>
+
+<p><strong>Network:</strong> BEP20 (BSC)</p>
+
+<p><strong>Wallet Address</strong></p>
+
+<input
+id="walletAddress"
+readonly
+value="YOUR_USDT_WALLET_ADDRESS"
+/>
+
+<br><br>
+
+<button id="copyBtn">
+Copy Address
 </button>
 
-<button class="paid" onclick="paid()">
+<br><br>
+
+<button id="paidBtn">
 I've Paid
 </button>
 
 </div>
 
+</div>
+
+<nav class="bottom-nav">
+
+<a href="index.html">
+🏠<br>Home
+</a>
+
+<a href="plans.html">
+📦<br>Plans
+</a>
+
+<a href="mining.html">
+⛏<br>Mining
+</a>
+
+<a href="wallet.html">
+👛<br>Wallet
+</a>
+
+<a href="referral.html">
+👥<br>Referral
+</a>
+
+</nav>
+
 <script>
 
-function copyWallet(){
+const params=new URLSearchParams(location.search);
 
-navigator.clipboard.writeText(document.getElementById("wallet").innerText);
+const plan=params.get("plan");
 
-alert("Wallet copied");
+const data={
+
+basic:{name:"Basic",price:"130 USDT"},
+
+starter:{name:"Starter",price:"320 USDT"},
+
+pro:{name:"Pro",price:"590 USDT"},
+
+advanced:{name:"Advanced",price:"540 USDT"},
+
+premium:{name:"Premium",price:"860 USDT"},
+
+elite:{name:"Elite",price:"860 USDT"},
+
+vip:{name:"VIP",price:"1040 USDT"}
+
+};
+
+if(data[plan]){
+
+document.getElementById("planName").innerHTML=data[plan].name;
+
+document.getElementById("planPrice").innerHTML=data[plan].price;
 
 }
 
-function paid() {
-    const params = new URLSearchParams(window.location.search);
-    const plan = params.get("plan");
+copyBtn.onclick=()=>{
 
-    if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(JSON.stringify({
-            action: "payment",
-            plan: plan
-        }));
-        Telegram.WebApp.close();
-    } else {
-        alert("Payment submitted for: " + plan);
-    }
-}
-    
-    
+navigator.clipboard.writeText(walletAddress.value);
 
-    
-        
-            
-            
-        
-        
-    
-      
-    
+alert("Wallet Copied");
 
+};
 
+paidBtn.onclick=()=>{
 
+alert("Payment request submitted.");
 
-
+};
 
 </script>
 
