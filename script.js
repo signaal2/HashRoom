@@ -16,14 +16,30 @@ startBtn.addEventListener("click", () => {
 
 });
 
-setInterval(() => {
+setInterval(async () => {
 
-    if (mining) {
+    if (!mining) return;
 
-        btc += 0.00000010;
+    btc += 0.00000010;
 
-        balance.innerHTML = btc.toFixed(8) + " BTC";
+    balance.innerHTML = btc.toFixed(8) + " BTC";
 
+    if (window.db && window.Telegram?.WebApp?.initDataUnsafe?.user) {
+
+        const user = Telegram.WebApp.initDataUnsafe.user;
+
+        const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+
+        await setDoc(
+            doc(window.db, "users", String(user.id)),
+            {
+                id: user.id,
+                username: user.username || "",
+                balance: btc,
+                updated: Date.now()
+            },
+            { merge: true }
+        );
     }
 
 }, 1000);
