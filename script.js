@@ -6,6 +6,7 @@ const balance = document.getElementById("balance");
 
 let mining = false;
 let btc = 0;
+let miningInterval = null;
 async function loadBalance() {
 
     if (!window.db || !window.Telegram?.WebApp?.initDataUnsafe?.user)
