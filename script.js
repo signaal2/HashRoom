@@ -3,7 +3,20 @@ console.log("Firebase DB:", window.db);
 console.log("Telegram:", window.Telegram?.WebApp?.initDataUnsafe);
 const startBtn = document.getElementById("startBtn");
 const balance = document.getElementById("balance");
+startBtn.addEventListener("click", async () => {
+    if (mining) return;
 
+    mining = true;
+    startBtn.innerText = "Mining...";
+
+    miningInterval = setInterval(async () => {
+        btc += 0.00000001;
+
+        balance.innerHTML = btc.toFixed(8) + " BTC";
+
+        await saveBalance();
+    }, 1000);
+});
 let mining = false;
 let btc = 0;
 let miningInterval = null;
