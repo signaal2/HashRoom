@@ -6,7 +6,30 @@ const balance = document.getElementById("balance");
 
 let mining = false;
 let btc = 0;
+async function loadBalance() {
 
+    if (!window.db || !window.Telegram?.WebApp?.initDataUnsafe?.user)
+        return;
+
+    const user = Telegram.WebApp.initDataUnsafe.user;
+
+    const { doc, getDoc } = await import(
+        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+    );
+
+    const snap = await getDoc(doc(window.db, "users", String(user.id)));
+
+    if (snap.exists()) {
+
+        btc = snap.data().balance || 0;
+
+        balance.innerHTML = btc.toFixed(8) + " BTC";
+
+    }
+
+}
+
+loadBalance();
 startBtn.addEventListener("click", () => {
 
     mining = !mining;
