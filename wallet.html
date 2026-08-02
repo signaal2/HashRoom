@@ -1,31 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa">
 <head>
 <meta charset="UTF-8">
 <title>Wallet</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
-<body>
+<body style="background:#111;color:#fff;text-align:center;font-family:sans-serif">
 
 <h2>Wallet</h2>
 
-<p>Your Balance:</p>
+<h1 id="balance">0.00000000 BTC</h1>
 
-<div id="balance">Loading...</div>
-
-<script type="module">
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const user = Telegram.WebApp.initDataUnsafe.user;
-
-const snap = await getDoc(doc(window.db,"users",String(user.id)));
-
-if(snap.exists()){
-document.getElementById("balance").innerHTML =
-snap.data().balance.toFixed(8)+" BTC";
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
