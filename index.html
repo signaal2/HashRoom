@@ -144,24 +144,103 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCb33maMPYDgLQLYV6puLxy9gwQ6OvcEzc",
-  authDomain: "hashroom-f8eee.firebaseapp.com",
-  projectId: "hashroom-f8eee",
-  storageBucket: "hashroom-f8eee.firebasestorage.app",
-  messagingSenderId: "693332836528",
-  appId: "1:693332836528:web:b88877825fd09b1d7cbb75"
-};
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<title>HashRoom</title>
 
-window.db = db;
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0d1117;
+color:white;
+text-align:center;
+}
+
+.header{
+padding:20px;
+font-size:30px;
+font-weight:bold;
+color:#00ff99;
+}
+
+.balance{
+margin:20px;
+font-size:22px;
+}
+
+.card{
+background:#161b22;
+margin:15px;
+padding:20px;
+border-radius:15px;
+}
+
+button{
+width:90%;
+padding:15px;
+margin-top:10px;
+background:#00ff99;
+border:none;
+border-radius:10px;
+font-size:18px;
+font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+🚀 HashRoom
+</div>
+
+<div class="balance">
+Welcome
+</div>
+
+<div class="card">
+<h2>Cloud Mining</h2>
+<p>Start earning USDT every hour.</p>
+
+<button id="buy">
+Buy Plan
+</button>
+</div>
+
+<div class="card">
+<h2>My Miners</h2>
+
+<p>No active miner.</p>
+
+</div>
+
+<script>
+
+let tg=window.Telegram.WebApp;
+
+tg.expand();
+
+document.querySelector(".balance").innerHTML=
+"Hello "+tg.initDataUnsafe.user.first_name;
+
+document.getElementById("buy").onclick=function(){
+
+alert("Buy Plan Coming Soon");
+
+}
+
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
