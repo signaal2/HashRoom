@@ -2,7 +2,7 @@ const startBtn = document.getElementById("startBtn");
 const balance = document.getElementById("balance");
 
 let mining = false;
-let btc = 0.01258634;
+let btc = 0;
 
 startBtn.addEventListener("click", () => {
 
