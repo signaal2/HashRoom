@@ -20,17 +20,20 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.getElementById("paidBtn").onclick = async () => {
-  const plan =
-    document.getElementById("planName").innerText;
-  const price =
-    document.getElementById("planPrice").innerText;
+  try {
+    const plan = document.getElementById("planName").innerText;
+    const price = document.getElementById("planPrice").innerText;
 
-  await addDoc(collection(db, "payments"), {
-    plan,
-    price,
-    status: "pending",
-    createdAt: serverTimestamp()
-  });
+    await addDoc(collection(db, "payments"), {
+      plan,
+      price,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
 
-  alert("Payment request sent successfully.");
+    alert("Payment request sent successfully.");
+  } catch (e) {
+    alert("ERROR: " + e.message);
+    console.log(e);
+  }
 };
