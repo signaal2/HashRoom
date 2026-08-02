@@ -227,3 +227,34 @@ setInterval(async () => {
 console.log("HashRoom Ready");
 
 });
+// ======================
+// START APP
+// ======================
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await initUser();
+
+    await resumeMining();
+
+});
+
+// هر ۱۰ ثانیه ذخیره در Firebase
+setInterval(async () => {
+
+    if (currentUser) {
+
+        await saveBalance();
+
+    }
+
+}, 10000);
+
+// هنگام خروج از صفحه
+window.addEventListener("beforeunload", async () => {
+
+    await saveBalance();
+
+});
+
+console.log("HashRoom Ready");
