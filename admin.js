@@ -25,3 +25,58 @@ const db = getFirestore(app);
 const paymentsDiv = document.getElementById("payments");
 
 const q = query(
+collection(db, "payments"),
+orderBy("createdAt", "desc")
+);
+
+onSnapshot(q, (snapshot) => {
+
+paymentsDiv.innerHTML = "";
+
+snapshot.forEach((docSnap) => {
+
+const data = docSnap.data();
+
+paymentsDiv.innerHTML += `
+<div class="card">
+
+<h3>${data.plan}</h3>
+
+<p>Price: ${data.price}</p>
+
+<p>Status: <b>${data.status}</b></p>
+
+<button onclick="approve('${docSnap.id}')">
+Approve
+</button>
+
+<button onclick="rejectPay('${docSnap.id}')">
+Reject
+</button>
+
+</div>
+`;
+
+});
+
+});
+
+window.approve = async (id) => {
+
+await updateDoc(doc(db, "payments", id), {
+
+status: "approved"
+
+});
+
+};
+
+window.rejectPay = async (id) => {
+
+await updateDoc(doc(db, "payments", id), {
+
+status: "rejected"
+
+});
+
+};
