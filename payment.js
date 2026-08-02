@@ -1,27 +1,35 @@
-const params = new URLSearchParams(window.location.search);
-const plan = params.get("plan");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-const data = {
-  basic: { name: "Basic", price: "130 USDT" },
-  starter: { name: "Starter", price: "320 USDT" },
-  pro: { name: "Pro", price: "590 USDT" },
-  advanced: { name: "Advanced", price: "540 USDT" },
-  premium: { name: "Premium", price: "860 USDT" },
-  elite: { name: "Elite", price: "860 USDT" },
-  vip: { name: "VIP", price: "1040 USDT" }
+const firebaseConfig = {
+  apiKey: "AIzaSyCb33maMPYDgLQLYV6puLxy9gwQ6OvcEzc",
+  authDomain: "hashroom-f8eee.firebaseapp.com",
+  projectId: "hashroom-f8eee",
+  storageBucket: "hashroom-f8eee.firebasestorage.app",
+  messagingSenderId: "693332836528",
+  appId: "1:693332836528:web:b88877825fd09b1d7cbb75"
 };
 
-if (data[plan]) {
-  document.getElementById("planName").textContent = data[plan].name;
-  document.getElementById("planPrice").textContent = data[plan].price;
-}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-document.getElementById("copyBtn").onclick = () => {
-  const wallet = document.getElementById("walletAddress").value;
-  navigator.clipboard.writeText(wallet);
-  alert("Wallet copied successfully");
-};
+document.getElementById("paidBtn").onclick = async () => {
+  const plan =
+    document.getElementById("planName").innerText;
+  const price =
+    document.getElementById("planPrice").innerText;
 
-document.getElementById("paidBtn").onclick = () => {
-  alert("Payment request submitted.\nYour account will be activated after confirmation.");
+  await addDoc(collection(db, "payments"), {
+    plan,
+    price,
+    status: "pending",
+    createdAt: serverTimestamp()
+  });
+
+  alert("Payment request sent successfully.");
 };
