@@ -1,79 +1,229 @@
-console.log("Script Loaded");
-console.log("Firebase DB:", window.db);
-console.log("Telegram:", window.Telegram?.WebApp?.initDataUnsafe);
+console.log("HashRoom Loaded");
+
+const tg = window.Telegram.WebApp;
+tg.expand();
+
 const startBtn = document.getElementById("startBtn");
 const balance = document.getElementById("balance");
+const walletBtn = document.getElementById("walletBtn");
+const referralBtn = document.getElementById("referralBtn");
+const mainBtn = document.getElementById("mainBtn");
 
+let mining = false;
+let miningInterval = null;
+let btc = 0;
+let currentUser = null;
 
-    );
-}
-async function loadBalance() {
+const {
+    initializeApp
+} = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
 
-    if (!window.db || !window.Telegram?.WebApp?.initDataUnsafe?.user)
-        return;
+const {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc
+} = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
 
-    const user = Telegram.WebApp.initDataUnsafe.user;
+const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+};
 
-    const { doc, getDoc } = await import(
-        "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-    );
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    const snap = await getDoc(doc(window.db, "users", String(user.id)));
+async function initUser() {
 
-    if (snap.exists()) {
+    currentUser = tg.initDataUnsafe.user;
+
+    if (!currentUser) return;
+
+    const ref = doc(db, "users", String(currentUser.id));
+
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+
+        await setDoc(ref, {
+
+            id: currentUser.id,
+
+            username: currentUser.username || "",
+
+            balance: 0,
+
+            mining: false,
+
+            updated: Date.now()
+
+        });
+
+        btc = 0;
+
+    } else {
 
         btc = snap.data().balance || 0;
 
+        mining = snap.data().mining || false;
+
+    }
+
+    balance.innerHTML = btc.toFixed(8) + " BTC";
+
+}async function saveBalance() {
+
+    if (!currentUser) return;
+
+    const ref = doc(db, "users", String(currentUser.id));
+
+    await updateDoc(ref, {
+
+        balance: btc,
+
+        mining: mining,
+
+        updated: Date.now()
+
+    });
+
+}
+
+async function startMining() {
+
+    if (mining) return;
+
+    mining = true;
+
+    startBtn.innerText = "Mining...";
+
+    await saveBalance();
+
+    miningInterval = setInterval(async () => {
+
+        btc += 0.00000001;
+
         balance.innerHTML = btc.toFixed(8) + " BTC";
+
+        await saveBalance();
+
+    }, 1000);
+
+}
+
+async function stopMining() {
+
+    mining = false;
+
+    clearInterval(miningInterval);
+
+    miningInterval = null;
+
+    startBtn.innerText = "Start Mining";
+
+    await saveBalance();
+
+}
+
+startBtn.addEventListener("click", async () => {
+
+    if (!mining) {
+
+        await startMining();
+
+    } else {
+
+        await stopMining();
+
+    }async function resumeMining() {
+
+    if (!currentUser) return;
+
+    const ref = doc(db, "users", String(currentUser.id));
+
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) return;
+
+    const data = snap.data();
+
+    btc = data.balance || 0;
+
+    mining = data.mining || false;
+
+    balance.innerHTML = btc.toFixed(8) + " BTC";
+
+    if (mining) {
+
+        startBtn.innerText = "Mining...";
+
+        miningInterval = setInterval(async () => {
+
+            btc += 0.00000001;
+
+            balance.innerHTML = btc.toFixed(8) + " BTC";
+
+            await saveBalance();
+
+        }, 1000);
 
     }
 
 }
 
-loadBalance();
-startBtn.addEventListener("click", () => {
+walletBtn.addEventListener("click", () => {
 
-    mining = !mining;
+    tg.showAlert("Wallet Balance : " + btc.toFixed(8) + " BTC");
 
-    if (mining) {
-        startBtn.innerHTML = "⛏ Mining...";
-    } else {
-        startBtn.innerHTML = "⚡ Start Mining";
-    }
+});
+
+referralBtn.addEventListener("click", () => {
+
+    const link = "https://t.me/" + tg.initDataUnsafe.user.username;
+
+    tg.showPopup({
+
+        title: "Referral",
+
+        message: link
+
+    });
+
+});
+
+mainBtn.addEventListener("click", () => {
+
+    window.location.href = "index.html";
+
+});document.addEventListener("DOMContentLoaded", async () => {
+
+    await initUser();
+
+    await resumeMining();
+
+});
+
+window.addEventListener("beforeunload", async () => {
+
+    await saveBalance();
 
 });
 
 setInterval(async () => {
 
-    if (!mining) return;
+    if (currentUser) {
 
-    btc += 0.00000010;
+        await saveBalance();
 
-    balance.innerHTML = btc.toFixed(8) + " BTC";
-
-    if (window.db && window.Telegram?.WebApp?.initDataUnsafe?.user) {
-
-        const user = Telegram.WebApp.initDataUnsafe.user;
-
-        const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-
-        await setDoc(
-            doc(window.db, "users", String(user.id)),
-            {
-                id: user.id,
-                username: user.username || "",
-                balance: btc,
-                updated: Date.now()
-            },
-            { merge: true }
-        );
     }
 
-}, 1000);
-function buyPlan(plan) {
-    Telegram.WebApp.close();
+}, 10000);
 
-    setTimeout(() => {
-        location.href = "https://t.me/HashRoom_bot";
-    }, 300);
-}
+console.log("HashRoom Ready");
+
+});
