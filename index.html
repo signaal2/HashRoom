@@ -3,91 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>HashRoom</title>
+
 <link rel="stylesheet" href="style.css">
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 </head>
 
 <body>
 
 <div class="container">
+
 <div class="header">
 
-  <div class="brand">
-    <img src="assets/images/logo.png" class="logo">
-    <div>
-      <h2>HASH ROOM</h2>
-      <p>Welcome back <span id="username">User</span></p>
-    </div>
-  </div>
+<div class="brand">
+<img src="assets/images/logo.png" class="logo">
 
-  <div class="user-box">
-    <strong id="plan">Miner VIP 2</strong><br>
-    <small>ID: <span id="userid">0</span></small>
-  </div>
+<div>
+<h2>HASH ROOM</h2>
+<p>Welcome <span id="username">User</span></p>
+</div>
 
 </div>
 
+<div class="user-box">
+<strong id="plan">No Plan</strong><br>
+<small>ID: <span id="userid">0</span></small>
+</div>
 
+</div>
 
 <div class="card">
 
-  <div class="top-card">
+<div class="top-card">
+<h2>Total Balance</h2>
 
-    <h2>Total Balance</h2>
+<h1 id="balance">0 BTC</h1>
 
-    <h1 id="balance">0 BTC</h1>
-
-    <p id="usd">≈ $0.00</p>
-
-  </div>
-
-  <div class="actions">
-
-    <button class="deposit">
-      Deposit
-    </button>
-
-    <button class="withdraw">
-      Withdraw
-    </button>
-
-  </div>
-
+<p id="usd">≈ $0.00</p>
 </div>
 
+<div class="actions">
+<button class="deposit">Deposit</button>
+<button class="withdraw">Withdraw</button>
+</div>
 
-
-
-
-
-
-
-
+</div>
 
 <div class="stats">
 
 <div class="stat">
-
-<h3>250 TH/s</h3>
-
+<h3 id="hashrate">0 TH/s</h3>
 <p>Hash Rate</p>
-
 </div>
 
 <div class="stat">
-
-<h3>0.00081 BTC</h3>
-
+<h3 id="daily">0 BTC</h3>
 <p>Daily Output</p>
-
 </div>
 
 <div class="stat">
-
-<h3>0.005689 BTC</h3>
-
+<h3 id="earned">0 BTC</h3>
 <p>Total Earned</p>
-
 </div>
 
 </div>
@@ -96,153 +75,53 @@
 
 <img src="assets/images/miner.png" width="220">
 
-<p style="color:#38ff6b;">● Active</p>
+<p id="mineStatus">Inactive</p>
 
 <button id="startBtn">
-
-⚡ Start Mining
-
+Start Mining
 </button>
 
 </div>
+
 <nav class="bottom-nav">
-  <a href="#" class="nav-item active">
-    <span>🏠</span>
-    <small>Home</small>
-  </a>
 
-  <a href="plans.html" class="nav-item">
-    <span>📦</span>
-    <small>Plans</small>
-  </a>
+<a href="index.html">🏠<br>Home</a>
 
-  <a href="mining.html" class="nav-item">
-    <span>⛏️</span>
-    <small>Mining</small>
-  </a>
+<a href="plans.html">📦<br>Plans</a>
 
-  <a href="wallet.html" class="nav-item">
-    <span>👛</span>
-    <small>Wallet</small>
-  </a>
+<a href="mining.html">⛏<br>Mining</a>
 
-  <a href="referral.html" class="nav-item">
-    <span>👥</span>
-    <small>Referral</small>
-  </a>
-    </nav>
+<a href="wallet.html">👛<br>Wallet</a>
 
+<a href="referral.html">👥<br>Referral</a>
 
-
-
-
-
-
-
-<script src="script.js"></script>
-  
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<title>HashRoom</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#0d1117;
-color:white;
-text-align:center;
-}
-
-.header{
-padding:20px;
-font-size:30px;
-font-weight:bold;
-color:#00ff99;
-}
-
-.balance{
-margin:20px;
-font-size:22px;
-}
-
-.card{
-background:#161b22;
-margin:15px;
-padding:20px;
-border-radius:15px;
-}
-
-button{
-width:90%;
-padding:15px;
-margin-top:10px;
-background:#00ff99;
-border:none;
-border-radius:10px;
-font-size:18px;
-font-weight:bold;
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-🚀 HashRoom
-</div>
-
-<div class="balance">
-Welcome
-</div>
-
-<div class="card">
-<h2>Cloud Mining</h2>
-<p>Start earning USDT every hour.</p>
-
-<button id="buy">
-Buy Plan
-</button>
-</div>
-
-<div class="card">
-<h2>My Miners</h2>
-
-<p>No active miner.</p>
+</nav>
 
 </div>
 
 <script>
 
-let tg=window.Telegram.WebApp;
+const tg = window.Telegram.WebApp;
 
 tg.expand();
 
-document.querySelector(".balance").innerHTML=
-"Hello "+tg.initDataUnsafe.user.first_name;
+const user = tg.initDataUnsafe.user;
 
-document.getElementById("buy").onclick=function(){
+if(user){
 
-alert("Buy Plan Coming Soon");
+document.getElementById("username").innerText=user.first_name;
+
+document.getElementById("userid").innerText=user.id;
+
+localStorage.setItem("uid",user.id);
+
+localStorage.setItem("username",user.first_name);
 
 }
 
 </script>
 
-</body>
-</html>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
-
-
