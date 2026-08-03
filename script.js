@@ -1,260 +1,238 @@
-console.log("HashRoom Loaded");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
-const tg = window.Telegram.WebApp;
-tg.expand();
-
-const startBtn = document.getElementById("startBtn");
-const balance = document.getElementById("balance");
-const walletBtn = document.getElementById("walletBtn");
-const referralBtn = document.getElementById("referralBtn");
-const mainBtn = document.getElementById("mainBtn");
-
-let mining = false;
-let miningInterval = null;
-let btc = 0;
-let currentUser = null;
-
-const {
-    initializeApp
-} = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-
-const {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc
-} = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "API_KEY",
-    authDomain: "PROJECT.firebaseapp.com",
-    projectId: "PROJECT_ID",
-    storageBucket: "PROJECT.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
+  apiKey: "AIzaSyCb33maMPYDgLQLYV6puLxy9gwQ6OvcEzc",
+  authDomain: "hashroom-f8eee.firebaseapp.com",
+  projectId: "hashroom-f8eee",
+  storageBucket: "hashroom-f8eee.firebasestorage.app",
+  messagingSenderId: "693332836528",
+  appId: "1:693332836528:web:b88877825fd09b1d7cbb75"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const tg = window.Telegram.WebApp;
+tg.expand();
+
+const user = tg.initDataUnsafe.user;
+
+if (!user) {
+  alert("Telegram User Not Found");
+  throw new Error("Telegram User Not Found");
+}
+
+document.getElementById("username").innerText = user.first_name;
+document.getElementById("userid").innerText = user.id;
+
+const uid = String(user.id);
+
+const userRef = doc(db, "users", uid);
+
+let userData = null;
+
 async function initUser() {
 
-    currentUser = tg.initDataUnsafe.user;
+  const snap = await getDoc(userRef);
 
-    if (!currentUser) return;
+  if (!snap.exists()) {
 
-    const ref = doc(db, "users", String(currentUser.id));
+    await setDoc(userRef, {
+      uid: uid,
+      username: user.first_name,
+      balance: 0,
+      mining: false,
+      status: "inactive",
+      plan: "None",
+      hashRate: 0,
+      daily: 0,
+      earned: 0
+    });
 
-    const snap = await getDoc(ref);
+    userData = {
+      balance: 0,
+      mining: false,
+      status: "inactive",
+      plan: "None",
+      hashRate: 0,
+      daily: 0,
+      earned: 0
+    };
 
-    if (!snap.exists()) {
+  } else {
 
-        await setDoc(ref, {
+    userData = snap.data();
 
-            id: currentUser.id,
+  }
 
-            username: currentUser.username || "",
+  document.getElementById("balance").innerHTML =
+    Number(userData.balance).toFixed(8) + " BTC";
 
-            balance: 0,
+  document.getElementById("plan").innerHTML =
+    userData.plan;
 
-            mining: false,
+}// ===========================
+// MINING SYSTEM
+// ===========================
 
-            updated: Date.now()
+const startBtn = document.getElementById("startBtn");
+const mineStatus = document.getElementById("mineStatus");
 
-        });
+let miningTimer = null;
+let balance = Number(userData.balance || 0);
 
-        btc = 0;
+function updateBalance() {
+  document.getElementById("balance").innerHTML =
+    balance.toFixed(8) + " BTC";
+}
 
-    } else {
+async function saveMining() {
 
-        btc = snap.data().balance || 0;
+  await updateDoc(userRef, {
 
-        mining = snap.data().mining || false;
+    balance: balance,
 
-    }
+    earned: balance,
 
-    balance.innerHTML = btc.toFixed(8) + " BTC";
+    mining: true
 
-}async function saveBalance() {
+  });
 
-    if (!currentUser) return;
+}
 
-    const ref = doc(db, "users", String(currentUser.id));
+function startMining() {
 
-    await updateDoc(ref, {
+  if (miningTimer) return;
 
-        balance: btc,
+  mineStatus.innerHTML = "🟢 Mining Active";
 
-        mining: mining,
+  startBtn.innerHTML = "Mining...";
 
-        updated: Date.now()
+  miningTimer = setInterval(async () => {
+
+    balance += 0.00000001;
+
+    updateBalance();
+
+    await saveMining();
+
+  }, 2000);
+
+}
+
+function stopMining() {
+
+  clearInterval(miningTimer);
+
+  miningTimer = null;
+
+  mineStatus.innerHTML = "🔴 Mining Stopped";
+
+  startBtn.innerHTML = "Start Mining";
+
+}
+
+startBtn.onclick = async () => {
+
+  const snap = await getDoc(userRef);
+
+  const data = snap.data();
+
+  if (data.status !== "active") {
+
+    alert("Buy a plan first");
+
+    return;
+
+  }
+
+  if (data.mining === false) {
+
+    alert("Admin has not approved your payment yet");
+
+    return;
+
+  }
+
+  startMining();
+
+};
+
+// اگر ادمین قبلاً تایید کرده بود
+if (userData.mining === true && userData.status === "active") {
+
+  startMining();
+
+}
+// ===========================
+// WALLET + REFERRAL
+// ===========================
+
+const walletBtn = document.querySelector(".withdraw");
+const depositBtn = document.querySelector(".deposit");
+
+walletBtn.onclick = async () => {
+
+  const snap = await getDoc(userRef);
+
+  const data = snap.data();
+
+  alert(
+    "Wallet\n\nBalance : " +
+    Number(data.balance).toFixed(8) +
+    " BTC"
+  );
+
+};
+
+depositBtn.onclick = () => {
+
+  window.location.href = "plans.html";
+
+};
+
+// ذخیره خودکار هر ۱۰ ثانیه
+setInterval(async () => {
+
+  if (miningTimer) {
+
+    await updateDoc(userRef, {
+
+      balance: balance,
+
+      earned: balance,
+
+      updated: Date.now()
 
     });
 
-}
+  }
 
-async function startMining() {
+}, 10000);
 
-    if (mining) return;
+// هنگام خروج
+window.addEventListener("beforeunload", async () => {
 
-    mining = true;
+  if (miningTimer) {
 
-    startBtn.innerText = "Mining...";
+    await updateDoc(userRef, {
 
-    await saveBalance();
+      balance: balance,
 
-    miningInterval = setInterval(async () => {
-
-        btc += 0.00000001;
-
-        balance.innerHTML = btc.toFixed(8) + " BTC";
-
-        await saveBalance();
-
-    }, 1000);
-
-}
-
-async function stopMining() {
-
-    mining = false;
-
-    clearInterval(miningInterval);
-
-    miningInterval = null;
-
-    startBtn.innerText = "Start Mining";
-
-    await saveBalance();
-
-}
-
-startBtn.addEventListener("click", async () => {
-
-    if (!mining) {
-
-        await startMining();
-
-    } else {
-
-        await stopMining();
-
-    }async function resumeMining() {
-
-    if (!currentUser) return;
-
-    const ref = doc(db, "users", String(currentUser.id));
-
-    const snap = await getDoc(ref);
-
-    if (!snap.exists()) return;
-
-    const data = snap.data();
-
-    btc = data.balance || 0;
-
-    mining = data.mining || false;
-
-    balance.innerHTML = btc.toFixed(8) + " BTC";
-
-    if (mining) {
-
-        startBtn.innerText = "Mining...";
-
-        miningInterval = setInterval(async () => {
-
-            btc += 0.00000001;
-
-            balance.innerHTML = btc.toFixed(8) + " BTC";
-
-            await saveBalance();
-
-        }, 1000);
-
-    }
-
-}
-
-walletBtn.addEventListener("click", () => {
-
-    tg.showAlert("Wallet Balance : " + btc.toFixed(8) + " BTC");
-
-});
-
-referralBtn.addEventListener("click", () => {
-
-    const link = "https://t.me/" + tg.initDataUnsafe.user.username;
-
-    tg.showPopup({
-
-        title: "Referral",
-
-        message: link
+      earned: balance
 
     });
 
-});
-
-mainBtn.addEventListener("click", () => {
-
-    window.location.href = "index.html";
-
-});document.addEventListener("DOMContentLoaded", async () => {
-
-    await initUser();
-
-    await resumeMining();
+  }
 
 });
 
-window.addEventListener("beforeunload", async () => {
-
-    await saveBalance();
-
-});
-
-setInterval(async () => {
-
-    if (currentUser) {
-
-        await saveBalance();
-
-    }
-
-}, 10000);
-
-console.log("HashRoom Ready");
-
-});
-// ======================
-// START APP
-// ======================
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-    await initUser();
-
-    await resumeMining();
-
-});
-
-// هر ۱۰ ثانیه ذخیره در Firebase
-setInterval(async () => {
-
-    if (currentUser) {
-
-        await saveBalance();
-
-    }
-
-}, 10000);
-
-// هنگام خروج از صفحه
-window.addEventListener("beforeunload", async () => {
-
-    await saveBalance();
-
-});
-
-console.log("HashRoom Ready");
+console.log("HashRoom Final Version Loaded");
