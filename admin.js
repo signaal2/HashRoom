@@ -87,7 +87,7 @@ window.approve = async (id) => {
     });
 
     alert("User approved successfully");
-    loadPayments();
+    
 
   } catch (e) {
     alert(e.message);
