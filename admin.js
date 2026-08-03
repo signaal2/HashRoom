@@ -100,3 +100,5 @@ window.rejectPay = async (id) => {
     status: "rejected"
   });
 };
+
+console.log("ADMIN FINAL VERSION");
