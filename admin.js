@@ -62,11 +62,20 @@ Reject
 });
 
 window.approve = async (id) => {
+
+  // تایید پرداخت
   await updateDoc(doc(db, "payments", id), {
     status: "approved"
   });
 
+  // فعال کردن اکانت کاربر
+  await updateDoc(doc(db, "users", id), {
+    status: "active",
+    mining: true
+  });
+
   alert("Payment Approved");
+
 };
 
 window.rejectPay = async (id) => {
