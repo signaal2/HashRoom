@@ -102,3 +102,4 @@ window.rejectPay = async (id) => {
 };
 
 console.log("ADMIN FINAL VERSION");
+alert("ADMIN VERSION NEW");
