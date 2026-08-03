@@ -27,8 +27,8 @@ document.getElementById("paidBtn").onclick = async () => {
 
     await addDoc(collection(db, "payments"), {
   uid: "test",
-  plan,
-  price,
+  plan: plan,
+  price: price,
   status: "pending",
   createdAt: serverTimestamp()
 });
