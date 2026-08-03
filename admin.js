@@ -74,6 +74,33 @@ window.approve = async (id) => {
 
     const payment = paymentSnap.data();
 
+    // تایید پرداخت
+    await updateDoc(paymentRef, {
+      status: "approved"
+    });
+
+    // فعال کردن کاربر
+    const userRef = doc(db, "users", payment.uid);
+
+    await updateDoc(userRef, {
+      status: "active",
+      mining: true,
+      plan: payment.plan,
+      activatedAt: new Date()
+    });
+
+    alert("Plan Activated Successfully ✅");
+
+    location.reload();
+
+  } catch (e) {
+    console.error(e);
+    alert("Approve Error:\n" + e.message);
+  }
+};
+
+    const payment = paymentSnap.data();
+
     // فعال کردن پرداخت
     await updateDoc(paymentRef, {
       status: "approved"
@@ -102,4 +129,4 @@ window.rejectPay = async (id) => {
 };
 
 console.log("ADMIN FINAL VERSION");
-alert("ADMIN VERSION NEW");
+alert
