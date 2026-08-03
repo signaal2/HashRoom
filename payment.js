@@ -23,9 +23,7 @@ document.getElementById("paidBtn").onclick = async () => {
   try {
     const plan = document.getElementById("planName").innerText;
     const price = document.getElementById("planPrice").innerText;
-    alert(plan + " | " + price);
-console.log(plan);
-console.log(price);
+    alert("Payment request sent successfully.");
 
     await addDoc(collection(db, "payments"), {
   uid: "test",
