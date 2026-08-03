@@ -110,6 +110,10 @@ async function saveMining() {
 
 function startMining() {
 
+  if (userData.status === "active" && userData.mining === true) {
+    startMining();
+  }
+  
   if (miningTimer) return;
 
   mineStatus.innerHTML = "🟢 Mining Active";
