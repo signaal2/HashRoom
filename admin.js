@@ -80,7 +80,7 @@ window.approve = async (id) => {
     });
 
     // فعال کردن کاربر
-    const userRef = doc(db, "users", payment.uid);
+    const userRef = doc(db, "users", "test");
 
     await updateDoc(userRef, {
       status: "active",
