@@ -62,13 +62,11 @@ Reject
 });
 
 window.approve = async (id) => {
-
-window.approve = async (id) => {
   await updateDoc(doc(db, "payments", id), {
     status: "approved"
   });
-};
 
+  alert("Payment Approved");
 };
 
 window.rejectPay = async (id) => {
