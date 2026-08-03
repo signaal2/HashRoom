@@ -25,11 +25,12 @@ document.getElementById("paidBtn").onclick = async () => {
     const price = document.getElementById("planPrice").innerText;
 
     await addDoc(collection(db, "payments"), {
-      plan,
-      price,
-      status: "pending",
-      createdAt: serverTimestamp()
-    });
+  uid: "test",
+  plan,
+  price,
+  status: "pending",
+  createdAt: serverTimestamp()
+});
 
     alert("Payment request sent successfully.");
   } catch (e) {
