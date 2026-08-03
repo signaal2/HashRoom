@@ -32,6 +32,7 @@ document.getElementById("paidBtn").onclick = async () => {
   status: "pending",
   createdAt: serverTimestamp()
 });
+    
 console.log("Saved to Firestore");
 alert("Saved to Firestore");
     alert("Payment request sent successfully.");
