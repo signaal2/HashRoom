@@ -62,20 +62,36 @@ Reject
 });
 
 window.approve = async (id) => {
+  try {
+    const paymentRef = doc(db, "payments", id);
+    const paymentSnap = await getDoc(paymentRef);
 
-  // تایید پرداخت
-  await updateDoc(doc(db, "payments", id), {
-    status: "approved"
-  });
+    if (!paymentSnap.exists()) {
+      alert("Payment not found");
+      return;
+    }
 
-  // فعال کردن اکانت کاربر
-  await updateDoc(doc(db, "users", id), {
-    status: "active",
-    mining: true
-  });
+    const payment = paymentSnap.data();
 
-  alert("Payment Approved");
+    // فعال کردن پرداخت
+    await updateDoc(paymentRef, {
+      status: "approved"
+    });
 
+    // بروزرسانی کاربر
+    await updateDoc(doc(db, "users", payment.uid), {
+      status: "active",
+      mining: true,
+      plan: payment.plan
+    });
+
+    alert("User approved successfully");
+    loadPayments();
+
+  } catch (e) {
+    alert(e.message);
+    console.log(e);
+  }
 };
 
 window.rejectPay = async (id) => {
